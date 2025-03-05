@@ -12,7 +12,7 @@ import lombok.Setter;
 
 public class FormatPPAEntity extends FormatEntity {
 
-    private StudentEntity student;
+    private String student;
     private String organizationAdvisor;
     private String acceptanceLetter;
 }
