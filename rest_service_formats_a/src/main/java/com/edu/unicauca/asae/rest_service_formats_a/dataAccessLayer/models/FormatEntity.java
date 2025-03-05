@@ -1,5 +1,6 @@
 package com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class FormatEntity {
     private Long id;
     private String title;
     private String directorName;
-    private LocalDateTime date;
+    private LocalDate createdAt;
     private FormatState state;
     private String generalObjective;
     private List<String> specificObjectives;

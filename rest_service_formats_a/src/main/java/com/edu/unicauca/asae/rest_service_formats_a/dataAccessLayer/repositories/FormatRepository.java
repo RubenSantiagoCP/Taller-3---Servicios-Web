@@ -1,5 +1,6 @@
 package com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.repositories;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,10 +35,10 @@ public class FormatRepository {
         return Optional.ofNullable(formatMap.get(id));
     }
 
-    public Optional<Collection<FormatEntity>> getFormatsBetweenDates(LocalDateTime startDate, LocalDateTime endDate) {
+    public Optional<Collection<FormatEntity>> getFormatsBetweenDates(LocalDate startDate, LocalDate endDate) {
         System.out.println("Getting formats between dates");
         Collection<FormatEntity> formats = this.formatMap.values().stream()
-                .filter(format -> format.getDate().isAfter(startDate) && format.getDate().isBefore(endDate))
+                .filter(format -> format.getCreatedAt().isAfter(startDate) && format.getCreatedAt().isBefore(endDate))
                 .collect(Collectors.toList());
         return Optional.ofNullable(formats);
     }

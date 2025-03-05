@@ -10,7 +10,7 @@ import lombok.Setter;
 
 public class FormatTIA extends FormatEntity {
     
-    private StudentEntity student1;
-    private StudentEntity student2;
+    private String student1;
+    private String student2;
 
 }
