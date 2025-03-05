@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -72,19 +71,12 @@ public class FormatServiceImpl implements IFormatService {
     }
     
     @Override
-    public ResultDTOResponse updateState(Long id, FormatDTORequest format) {
+    public ResultDTOResponse updateState(Long id, String state) {
         Format formatDomain = this.modelMapper.map(formatRepository.getFormat(id).orElseThrow(), Format.class);
-        System.out.println(formatDomain);
-        FormatStateServiceEnum targetState = FormatStateServiceEnum.valueOf(format.getState());
-        System.out.println(targetState);
+        FormatStateServiceEnum targetState = FormatStateServiceEnum.valueOf(state);
         Result res = changeState(formatDomain,targetState);
-        System.out.println("Respuesta de cambio de estado: "+res);
-        System.out.println("Estado del dominio despues de cambiar: "+formatDomain.getState());
         if(res.isSuccess()){
-            FormatEntity updatedFormatEntity = this.modelMapper.map(formatDomain, FormatEntity.class);
-            System.out.printf("Formato a actualizar en la base de datos: %s\n", updatedFormatEntity);
-            Optional<FormatEntity> resultdb = this.formatRepository.updateById(id, updatedFormatEntity);
-            System.out.println("Formato actualizado en la base de datos: "+resultdb);
+            this.formatRepository.changeState(id, formatDomain.getState().toString());
         }
         return modelMapper.map(res, ResultDTOResponse.class);
     }

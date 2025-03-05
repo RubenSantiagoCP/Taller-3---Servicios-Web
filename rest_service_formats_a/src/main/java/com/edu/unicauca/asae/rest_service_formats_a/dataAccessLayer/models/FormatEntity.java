@@ -1,7 +1,6 @@
 package com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.enums.FormatState;

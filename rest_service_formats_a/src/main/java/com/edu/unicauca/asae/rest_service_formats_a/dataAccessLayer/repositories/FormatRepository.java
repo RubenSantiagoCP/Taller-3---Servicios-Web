@@ -1,7 +1,6 @@
 package com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.repositories;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-// import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.enums.FormatState;
+import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.enums.FormatState;
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatEntity;
 
 @Repository("IDFormatRepository")
@@ -57,11 +56,11 @@ public class FormatRepository {
         return respuesta;
     }
 
-    // public Optional<FormatEntity> changeState(Long id, FormatState State) {
-    //     System.out.println("Changing State");
-    //     if (this.formatMap.containsKey(id)) {
-    //         this.formatMap.get(id).setState(State);
-    //     }
-    //     return Optional.ofNullable(this.formatMap.get(id));
-    // }
+    public Optional<FormatEntity> changeState(Long id, String State) {
+         System.out.println("Changing State");
+         if (this.formatMap.containsKey(id)) {
+             this.formatMap.get(id).setState(FormatState.valueOf(State));
+         }
+         return Optional.ofNullable(this.formatMap.get(id));
+     }
 }
