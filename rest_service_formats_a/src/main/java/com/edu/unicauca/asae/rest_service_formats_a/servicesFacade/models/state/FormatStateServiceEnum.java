@@ -1,5 +1,8 @@
 package com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state;
 
+import lombok.Getter;
+
+@Getter
 public enum FormatStateServiceEnum {
     FORMULATED(new FormulatedState()),  
     UNDER_REVIEW(new UnderReviewState()),  
@@ -13,7 +16,4 @@ public enum FormatStateServiceEnum {
         this.state = state;
     }
 
-    public IState getState() {
-        return this.state;
-    }
 }

@@ -24,7 +24,7 @@ public class FormatRepository {
     public FormatEntity addFormat(FormatEntity format) {
         System.out.println("Adding format");
         Long idFormat = (long) formatMap.size();
-        format.setId(1L);
+        format.setId(idFormat);
         formatMap.put(idFormat, format);
         return formatMap.get(idFormat);
     }
@@ -43,8 +43,17 @@ public class FormatRepository {
     }
 
     public Optional<FormatEntity> updateById(Long id, FormatEntity format) {
+        Optional<FormatEntity> respuesta;
         System.out.println("Updating format");
-        return Optional.ofNullable(formatMap.put(id, format));
+
+        if(this.formatMap.containsKey(id)) {
+            this.formatMap.put(id, format);
+            respuesta = Optional.of(format);
+
+        }else{
+            respuesta = Optional.empty();
+        }
+        return respuesta;
     }
 
     // public Optional<FormatEntity> changeState(Long id, FormatState State) {

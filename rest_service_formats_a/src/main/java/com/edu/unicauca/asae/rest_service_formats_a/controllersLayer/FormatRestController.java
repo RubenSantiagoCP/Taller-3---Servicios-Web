@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/format")
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class FormatRestController {
 
@@ -21,12 +20,12 @@ public class FormatRestController {
     private IFormatService facadeFormatService;
 
 
-    @PostMapping("/save")
+    @PostMapping(value = "/save", consumes =  "application/json", produces = "application/json")
     public FormatDTOResponse saveFormat(@RequestBody FormatDTORequest format) {
         return facadeFormatService.save(format);
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping(value = "/update/{id}", consumes =  "application/json", produces = "application/json")
     public ResultDTOResponse updateFormat(@PathVariable Long id, @RequestBody FormatDTORequest format) {
         return facadeFormatService.updateState(id, format);
     }

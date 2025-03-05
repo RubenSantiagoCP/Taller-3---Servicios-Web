@@ -5,9 +5,11 @@ import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Format {
     private FormatStateServiceEnum state;
 

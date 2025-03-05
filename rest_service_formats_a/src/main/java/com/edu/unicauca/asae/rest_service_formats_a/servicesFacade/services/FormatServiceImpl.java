@@ -9,6 +9,7 @@ import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.ResultDTO
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.Format;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.FormatStateServiceEnum;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.Result;
+import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.UnderReviewState;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,10 @@ import java.util.Optional;
 
 @Service("IDFacadeFormatService")
 @AllArgsConstructor
-@NoArgsConstructor
 public class FormatServiceImpl implements IFormatService {
     @Qualifier("IDFormatRepository")
     private FormatRepository formatRepository;
+
 	private ModelMapper modelMapper;
 
 
@@ -74,29 +75,29 @@ public class FormatServiceImpl implements IFormatService {
     @Override
     public ResultDTOResponse updateState(Long id, FormatDTORequest format) {
         Format formatDomain = this.modelMapper.map(formatRepository.getFormat(id).orElseThrow(), Format.class);
+        System.out.println(formatDomain);
         FormatStateServiceEnum targetState = FormatStateServiceEnum.valueOf(format.getState());
+        System.out.println(targetState);
         Result res = changeState(formatDomain,targetState);
+        System.out.println("Respuesta de cambio de estado: "+res);
+        System.out.println("Estado del dominio despues de cambiar: "+formatDomain.getState());
         if(res.success()){
             FormatEntity updatedFormatEntity = this.modelMapper.map(formatDomain, FormatEntity.class);
-            this.formatRepository.updateById(id, updatedFormatEntity);
+            System.out.printf("Formato a actualizar en la base de datos: %s\n", updatedFormatEntity);
+            Optional<FormatEntity> resultdb = this.formatRepository.updateById(id, updatedFormatEntity);
+            System.out.println("Formato actualizado en la base de datos: "+resultdb);
         }
         return modelMapper.map(res, ResultDTOResponse.class);
     }
 
 
     private Result changeState(Format formatDomain,FormatStateServiceEnum state){
-        switch (state){
-            case FORMULATED:
-                return formatDomain.sendToFormulated();
-            case UNDER_REVIEW:
-                return formatDomain.sendToReview();
-            case TO_BE_FIXED:
-                return formatDomain.sendToCorrection();
-            case REJECTED:
-                return formatDomain.sendToRejected();
-            case APPROVED:
-                return formatDomain.sendToApproval();
-        }
-        return null;
+        return switch (state) {
+            case FORMULATED -> formatDomain.sendToFormulated();
+            case UNDER_REVIEW -> formatDomain.sendToReview();
+            case TO_BE_FIXED -> formatDomain.sendToCorrection();
+            case REJECTED -> formatDomain.sendToRejected();
+            case APPROVED -> formatDomain.sendToApproval();
+        };
     }
 }
