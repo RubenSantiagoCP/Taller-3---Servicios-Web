@@ -81,7 +81,7 @@ public class FormatServiceImpl implements IFormatService {
         Result res = changeState(formatDomain,targetState);
         System.out.println("Respuesta de cambio de estado: "+res);
         System.out.println("Estado del dominio despues de cambiar: "+formatDomain.getState());
-        if(res.success()){
+        if(res.isSuccess()){
             FormatEntity updatedFormatEntity = this.modelMapper.map(formatDomain, FormatEntity.class);
             System.out.printf("Formato a actualizar en la base de datos: %s\n", updatedFormatEntity);
             Optional<FormatEntity> resultdb = this.formatRepository.updateById(id, updatedFormatEntity);
