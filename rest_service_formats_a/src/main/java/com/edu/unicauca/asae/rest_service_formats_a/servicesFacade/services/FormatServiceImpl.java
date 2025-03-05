@@ -9,6 +9,7 @@ import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.ResultDTO
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.Format;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.FormatStateServiceEnum;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.Result;
+import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.UnderReviewState;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -76,8 +77,9 @@ public class FormatServiceImpl implements IFormatService {
         Format formatDomain = this.modelMapper.map(formatRepository.getFormat(id).orElseThrow(), Format.class);
         System.out.println(formatDomain);
         FormatStateServiceEnum targetState = FormatStateServiceEnum.valueOf(format.getState());
-
+        System.out.println(targetState);
         Result res = changeState(formatDomain,targetState);
+        System.out.println("Estado del dominio despues de cambiar: "+formatDomain.getState());
         if(res.success()){
             FormatEntity updatedFormatEntity = this.modelMapper.map(formatDomain, FormatEntity.class);
             this.formatRepository.updateById(id, updatedFormatEntity);
