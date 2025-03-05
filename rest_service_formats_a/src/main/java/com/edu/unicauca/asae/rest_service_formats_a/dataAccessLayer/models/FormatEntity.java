@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.enums.FormatState;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import lombok.*;
 
 @Getter
@@ -12,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
+@JsonSubTypes( { @JsonSubTypes.Type(value = FormatTIA.class, name = "FormatTIA") , @JsonSubTypes.Type(value = FormatPPAEntity.class, name = "FormatPPAEntity")})
 public class FormatEntity {
     private Long id;
     private String title;

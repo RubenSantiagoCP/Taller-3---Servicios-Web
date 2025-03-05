@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatPPAEntity;
+import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatTIA;
+import org.springframework.boot.actuate.endpoint.invoker.cache.CachingOperationInvokerAdvisor;
 import org.springframework.stereotype.Repository;
 
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.enums.FormatState;
@@ -15,14 +18,22 @@ import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.Forma
 @Repository("IDFormatRepository")
 public class FormatRepository {
 
+    private final CachingOperationInvokerAdvisor cachingOperationInvokerAdvisor;
     private Map<Long, FormatEntity> formatMap;
 
-    public FormatRepository() {
+    public FormatRepository(CachingOperationInvokerAdvisor cachingOperationInvokerAdvisor) {
         formatMap = new HashMap<>();
+        this.cachingOperationInvokerAdvisor = cachingOperationInvokerAdvisor;
     }
 
     public FormatEntity addFormat(FormatEntity format) {
         System.out.println("Adding format");
+        if(format instanceof FormatTIA) {
+            System.out.printf("TIA:"+(FormatTIA)format);
+
+        }else if(format instanceof FormatPPAEntity) {
+            System.out.printf("PPA:"+(FormatPPAEntity)format);
+        }
         Long idFormat = (long) formatMap.size();
         format.setId(idFormat);
         formatMap.put(idFormat, format);

@@ -1,6 +1,7 @@
 package com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonSubTypes({ @JsonSubTypes.Type(value = FormatTIADTORequest.class, name = "FormatTIADTORequest") , @JsonSubTypes.Type(value = FormatPPADTORequest.class, name = "FormatPPADTORequest")})
 public class FormatDTORequest {
     private String state;
     //private Long id;
