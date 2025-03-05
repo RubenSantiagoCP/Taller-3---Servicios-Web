@@ -79,10 +79,13 @@ public class FormatServiceImpl implements IFormatService {
         FormatStateServiceEnum targetState = FormatStateServiceEnum.valueOf(format.getState());
         System.out.println(targetState);
         Result res = changeState(formatDomain,targetState);
+        System.out.println("Respuesta de cambio de estado: "+res);
         System.out.println("Estado del dominio despues de cambiar: "+formatDomain.getState());
         if(res.success()){
             FormatEntity updatedFormatEntity = this.modelMapper.map(formatDomain, FormatEntity.class);
-            this.formatRepository.updateById(id, updatedFormatEntity);
+            System.out.printf("Formato a actualizar en la base de datos: %s\n", updatedFormatEntity);
+            Optional<FormatEntity> resultdb = this.formatRepository.updateById(id, updatedFormatEntity);
+            System.out.println("Formato actualizado en la base de datos: "+resultdb);
         }
         return modelMapper.map(res, ResultDTOResponse.class);
     }
