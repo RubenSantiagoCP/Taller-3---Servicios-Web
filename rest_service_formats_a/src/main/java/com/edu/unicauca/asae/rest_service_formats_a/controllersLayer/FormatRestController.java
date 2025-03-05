@@ -49,7 +49,7 @@ public class FormatRestController {
     }
 
     @PutMapping("/update/{id}")
-    public ResultDTOResponse updateFormat(@PathVariable Long id, @RequestBody FormatDTORequest format) {
+    public FormatDTOResponse updateFormat(@PathVariable Long id, @RequestBody FormatDTORequest format) {
         return facadeFormatService.update(id, format);
     }
     

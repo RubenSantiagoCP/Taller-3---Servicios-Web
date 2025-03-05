@@ -13,5 +13,5 @@ public interface IFormatService {
     public FormatDTOResponse findById(Long id);
     public List<FormatDTOResponse> getFormatsBetweenDates(LocalDate startDate, LocalDate endDate);
     public ResultDTOResponse updateState(Long id, String format);
-
+    public FormatDTOResponse update(Long id, FormatDTORequest format);
 }

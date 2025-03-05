@@ -81,6 +81,25 @@ public class FormatServiceImpl implements IFormatService {
         return modelMapper.map(res, ResultDTOResponse.class);
     }
 
+    @Override
+    public FormatDTOResponse update(Long id, FormatDTORequest format) {
+        FormatEntity formateUpdate = null;
+        Optional<FormatEntity> optionalFormat = this.formatRepository.getFormat(id);
+        if (optionalFormat.isPresent()) {
+            formateUpdate = optionalFormat.get();
+            formateUpdate.setTitle(format.getTitle());
+            formateUpdate.setDirectorName(format.getDirectorName());
+            formateUpdate.setCreatedAt(format.getCreatedAt());
+            formateUpdate.setGeneralObjective(format.getGeneralObjective());
+            formateUpdate.setSpecificObjectives(format.getSpecificObjectives());
+            formateUpdate.setStimatedTime(format.getStimatedTime());
+            formateUpdate.setObservations(format.getObservations());
+            formateUpdate.setState(FormatState.valueOf(format.getState()));
+            this.formatRepository.updateById(id, formateUpdate);
+        }
+        return modelMapper.map(formateUpdate, FormatDTOResponse.class);
+    }
+
 
     private Result changeState(Format formatDomain,FormatStateServiceEnum state){
         return switch (state) {
