@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class FormatEntity {
+public class FormatEntity {
     private Long id;
     private String title;
     private String directorName;

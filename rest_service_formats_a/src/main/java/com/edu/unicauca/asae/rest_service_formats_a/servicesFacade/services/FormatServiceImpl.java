@@ -24,10 +24,10 @@ import java.util.Optional;
 
 @Service("IDFacadeFormatService")
 @AllArgsConstructor
-@NoArgsConstructor
 public class FormatServiceImpl implements IFormatService {
     @Qualifier("IDFormatRepository")
     private FormatRepository formatRepository;
+
 	private ModelMapper modelMapper;
 
 
@@ -74,7 +74,9 @@ public class FormatServiceImpl implements IFormatService {
     @Override
     public ResultDTOResponse updateState(Long id, FormatDTORequest format) {
         Format formatDomain = this.modelMapper.map(formatRepository.getFormat(id).orElseThrow(), Format.class);
+        System.out.println(formatDomain);
         FormatStateServiceEnum targetState = FormatStateServiceEnum.valueOf(format.getState());
+
         Result res = changeState(formatDomain,targetState);
         if(res.success()){
             FormatEntity updatedFormatEntity = this.modelMapper.map(formatDomain, FormatEntity.class);
@@ -85,18 +87,12 @@ public class FormatServiceImpl implements IFormatService {
 
 
     private Result changeState(Format formatDomain,FormatStateServiceEnum state){
-        switch (state){
-            case FORMULATED:
-                return formatDomain.sendToFormulated();
-            case UNDER_REVIEW:
-                return formatDomain.sendToReview();
-            case TO_BE_FIXED:
-                return formatDomain.sendToCorrection();
-            case REJECTED:
-                return formatDomain.sendToRejected();
-            case APPROVED:
-                return formatDomain.sendToApproval();
-        }
-        return null;
+        return switch (state) {
+            case FORMULATED -> formatDomain.sendToFormulated();
+            case UNDER_REVIEW -> formatDomain.sendToReview();
+            case TO_BE_FIXED -> formatDomain.sendToCorrection();
+            case REJECTED -> formatDomain.sendToRejected();
+            case APPROVED -> formatDomain.sendToApproval();
+        };
     }
 }
