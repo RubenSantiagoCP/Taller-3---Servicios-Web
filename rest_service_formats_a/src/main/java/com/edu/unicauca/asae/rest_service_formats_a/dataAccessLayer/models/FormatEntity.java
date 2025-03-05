@@ -19,9 +19,11 @@ public abstract class FormatEntity {
     private String title;
     private String directorName;
     private LocalDateTime date;
-    private FormatState State;
+    private FormatState state;
     private String generalObjective;
     private List<String> specificObjectives;
     private String stimatedTime;
     private String observations;
+
+
 }

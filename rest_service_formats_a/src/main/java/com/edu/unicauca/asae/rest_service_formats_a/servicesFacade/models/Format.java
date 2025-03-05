@@ -9,30 +9,30 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Format {
-    private FormatStateServiceEnum State;
+    private FormatStateServiceEnum state;
 
     public Format() {
-        this.State = FormatStateServiceEnum.FORMULATED;
+        this.state = FormatStateServiceEnum.FORMULATED;
     }
 
     public Result sendToReview() {
-        return this.State.getState().sendToReview(this);
+        return this.state.getState().sendToReview(this);
     }
 
     public Result sendToApproval() {
-        return this.State.getState().sendToApproval(this);
+        return this.state.getState().sendToApproval(this);
     }
 
     public Result sendToFormulated() {
-        return this.State.getState().sendToFormulated(this);
+        return this.state.getState().sendToFormulated(this);
     }
 
     public Result sendToCorrection() {
-        return this.State.getState().sendToCorrection(this);
+        return this.state.getState().sendToCorrection(this);
     }
 
     public Result sendToRejected() {
-        return this.State.getState().sendToRejected(this);
+        return this.state.getState().sendToRejected(this);
     }
 
 }

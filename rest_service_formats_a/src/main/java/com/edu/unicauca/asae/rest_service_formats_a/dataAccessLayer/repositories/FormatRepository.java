@@ -24,7 +24,7 @@ public class FormatRepository {
     public FormatEntity addFormat(FormatEntity format) {
         System.out.println("Adding format");
         Long idFormat = (long) formatMap.size();
-        format.setId(idFormat);
+        format.setId(1L);
         formatMap.put(idFormat, format);
         return formatMap.get(idFormat);
     }
