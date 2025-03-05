@@ -2,8 +2,12 @@ package com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.services;
 
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.enums.FormatState;
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatEntity;
+import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatPPAEntity;
+import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatTIA;
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.repositories.FormatRepository;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.request.FormatDTORequest;
+import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.request.FormatPPADTORequest;
+import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.request.FormatTIADTORequest;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.response.FormatDTOResponse;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.response.ResultDTOResponse;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.Format;
@@ -33,9 +37,9 @@ public class FormatServiceImpl implements IFormatService {
 
     @Override
     public FormatDTOResponse save(FormatDTORequest format) {
-        format.setCreatedAt(LocalDate.now());
         FormatEntity formatEntity = this.modelMapper.map(format, FormatEntity.class);
         formatEntity.setState(FormatState.FORMULATED);
+        formatEntity.setCreatedAt(LocalDate.now());
         FormatEntity savedFormatEntity = this.formatRepository.addFormat(formatEntity);
         System.out.println(savedFormatEntity);
         FormatDTOResponse formatDTO = this.modelMapper.map(savedFormatEntity, FormatDTOResponse.class);
@@ -85,16 +89,28 @@ public class FormatServiceImpl implements IFormatService {
     public FormatDTOResponse update(Long id, FormatDTORequest format) {
         FormatEntity formateUpdate = null;
         Optional<FormatEntity> optionalFormat = this.formatRepository.getFormat(id);
+
+
+
         if (optionalFormat.isPresent()) {
             formateUpdate = optionalFormat.get();
             formateUpdate.setTitle(format.getTitle());
             formateUpdate.setDirectorName(format.getDirectorName());
-            formateUpdate.setCreatedAt(format.getCreatedAt());
+            //formateUpdate.setCreatedAt(format.getCreatedAt());
             formateUpdate.setGeneralObjective(format.getGeneralObjective());
             formateUpdate.setSpecificObjectives(format.getSpecificObjectives());
             formateUpdate.setStimatedTime(format.getStimatedTime());
             formateUpdate.setObservations(format.getObservations());
-            formateUpdate.setState(FormatState.valueOf(format.getState()));
+            if(format instanceof FormatPPADTORequest){
+                FormatPPAEntity formateUpdatePPA = (FormatPPAEntity) formateUpdate;
+                formateUpdatePPA.setStudent(((FormatPPADTORequest) format).getStudent());
+                formateUpdatePPA.setOrganizationAdvisor(((FormatPPADTORequest) format).getOrganizationAdvisor());
+                formateUpdatePPA.setAcceptanceLetter(((FormatPPADTORequest) format).getAcceptanceLetter());
+            } else if (format instanceof FormatTIADTORequest) {
+                FormatTIA formateUpdateTIA = (FormatTIA) formateUpdate;
+                formateUpdateTIA.setStudent1(((FormatTIADTORequest) format).getStudent1());
+                formateUpdateTIA.setStudent2(((FormatTIADTORequest) format).getStudent2());
+            }
             this.formatRepository.updateById(id, formateUpdate);
         }
         return modelMapper.map(formateUpdate, FormatDTOResponse.class);

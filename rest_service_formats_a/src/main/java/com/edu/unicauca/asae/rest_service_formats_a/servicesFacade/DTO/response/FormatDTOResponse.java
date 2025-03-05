@@ -10,7 +10,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FormatDTOResponse {
     private String state;
-    //private Long id;
+    private Long id;
     private String title;
     private String directorName;
     private LocalDate createdAt;
