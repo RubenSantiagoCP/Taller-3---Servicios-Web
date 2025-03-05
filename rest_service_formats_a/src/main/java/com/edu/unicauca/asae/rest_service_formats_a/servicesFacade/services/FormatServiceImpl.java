@@ -89,6 +89,11 @@ public class FormatServiceImpl implements IFormatService {
         return modelMapper.map(res, ResultDTOResponse.class);
     }
 
+    @Override
+    public FormatDTOResponse update(Long id, FormatDTORequest format) {
+        return null;
+    }
+
 
     private Result changeState(Format formatDomain,FormatStateServiceEnum state){
         return switch (state) {
