@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("IDFacadeFormatService")
 @AllArgsConstructor
@@ -67,7 +68,13 @@ public class FormatServiceImpl implements IFormatService {
         Optional<FormatEntity> optionalFormat = this.formatRepository.getFormat(id);
         if (optionalFormat.isPresent()) {
             FormatEntity formatEntity = optionalFormat.get();
-            formatResponse = this.modelMapper.map(formatEntity, FormatDTOResponse.class);
+            if (formatEntity instanceof FormatPPAEntity) {
+                formatResponse = this.modelMapper.map(formatEntity, FormatPPADTOResponse.class);
+            } else if (formatEntity instanceof FormatTIA) {
+                formatResponse = this.modelMapper.map(formatEntity, FormatTIADTOResponse.class);
+            } else {
+                formatResponse = this.modelMapper.map(formatEntity, FormatDTOResponse.class);
+            }
         }
         return formatResponse;
     }
@@ -77,14 +84,19 @@ public class FormatServiceImpl implements IFormatService {
         List<FormatDTOResponse> listaRetornar;
         Optional<Collection<FormatEntity>> formatsEntityOpt = this.formatRepository.getFormatsBetweenDates(startDate, endDate);
 
-        // Si el Optional está vacío, devolvemos una lista vacía
         if (formatsEntityOpt.isEmpty()) {
-            listaRetornar = List.of(); // Retorna una lista inmutable vacía
+            listaRetornar = List.of();
         } else {
-            // Convertimos la colección a una lista y la mapeamos a FormatDTOResponse
             Collection<FormatEntity> formatsEntity = formatsEntityOpt.get();
-            listaRetornar = this.modelMapper.map(formatsEntity, new TypeToken<List<FormatDTOResponse>>() {
-            }.getType());
+            listaRetornar = formatsEntity.stream().map(formatEntity -> {
+                if (formatEntity instanceof FormatPPAEntity) {
+                    return this.modelMapper.map(formatEntity, FormatPPADTOResponse.class);
+                } else if (formatEntity instanceof FormatTIA) {
+                    return this.modelMapper.map(formatEntity, FormatTIADTOResponse.class);
+                } else {
+                    return this.modelMapper.map(formatEntity, FormatDTOResponse.class);
+                }
+            }).collect(Collectors.toList());
         }
         return listaRetornar;
     }
@@ -104,7 +116,6 @@ public class FormatServiceImpl implements IFormatService {
     public FormatDTOResponse update(Long id, FormatDTORequest format) {
         FormatEntity formateUpdate = null;
         Optional<FormatEntity> optionalFormat = this.formatRepository.getFormat(id);
-
 
         if (optionalFormat.isPresent()) {
             formateUpdate = optionalFormat.get();
@@ -127,7 +138,14 @@ public class FormatServiceImpl implements IFormatService {
             }
             this.formatRepository.updateById(id, formateUpdate);
         }
-        return modelMapper.map(formateUpdate, FormatDTOResponse.class);
+
+        if (formateUpdate instanceof FormatPPAEntity) {
+            return this.modelMapper.map(formateUpdate, FormatPPADTOResponse.class);
+        } else if (formateUpdate instanceof FormatTIA) {
+            return this.modelMapper.map(formateUpdate, FormatTIADTOResponse.class);
+        } else {
+            return this.modelMapper.map(formateUpdate, FormatDTOResponse.class);
+        }
     }
 
 
