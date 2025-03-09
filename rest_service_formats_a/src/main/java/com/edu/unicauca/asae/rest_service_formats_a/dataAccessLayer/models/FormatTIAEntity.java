@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FormatTIA extends FormatEntity {
+public class FormatTIAEntity extends FormatEntity {
     
     private String student1;
     private String student2;

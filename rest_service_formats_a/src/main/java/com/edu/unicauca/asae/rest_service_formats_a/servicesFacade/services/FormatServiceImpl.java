@@ -3,7 +3,7 @@ package com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.services;
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.enums.FormatState;
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatEntity;
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatPPAEntity;
-import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatTIA;
+import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatTIAEntity;
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.repositories.FormatRepository;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.request.FormatDTORequest;
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.DTO.request.FormatPPADTORequest;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service("IDFacadeFormatService")
+@Service("IDFormatService")
 @AllArgsConstructor
 public class FormatServiceImpl implements IFormatService {
     @Qualifier("IDFormatRepository")
@@ -104,7 +104,7 @@ public class FormatServiceImpl implements IFormatService {
                 formateUpdatePPA.setOrganizationAdvisor(((FormatPPADTORequest) format).getOrganizationAdvisor());
                 formateUpdatePPA.setAcceptanceLetter(((FormatPPADTORequest) format).getAcceptanceLetter());
             } else if (format instanceof FormatTIADTORequest) {
-                FormatTIA formateUpdateTIA = (FormatTIA) formateUpdate;
+                FormatTIAEntity formateUpdateTIA = (FormatTIAEntity) formateUpdate;
                 formateUpdateTIA.setStudent1(((FormatTIADTORequest) format).getStudent1());
                 formateUpdateTIA.setStudent2(((FormatTIADTORequest) format).getStudent2());
             }
@@ -118,7 +118,7 @@ public class FormatServiceImpl implements IFormatService {
         if (format instanceof FormatPPADTORequest) {
             return this.modelMapper.map(format, FormatPPAEntity.class);
         } else if (format instanceof FormatTIADTORequest) {
-            return this.modelMapper.map(format, FormatTIA.class);
+            return this.modelMapper.map(format, FormatTIAEntity.class);
         } else {
             return this.modelMapper.map(format, FormatEntity.class);
         }
@@ -127,7 +127,7 @@ public class FormatServiceImpl implements IFormatService {
     public FormatDTOResponse validateTypeDTOResponse(FormatEntity savedFormatEntity) {
         if (savedFormatEntity instanceof FormatPPAEntity) {
             return this.modelMapper.map(savedFormatEntity, FormatPPADTOResponse.class);
-        } else if (savedFormatEntity instanceof FormatTIA) {
+        } else if (savedFormatEntity instanceof FormatTIAEntity) {
             return this.modelMapper.map(savedFormatEntity, FormatTIADTOResponse.class);
         } else {
             return this.modelMapper.map(savedFormatEntity, FormatDTOResponse.class);

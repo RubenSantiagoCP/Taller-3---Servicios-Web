@@ -24,33 +24,33 @@ import org.springframework.web.bind.annotation.PathVariable;
 @AllArgsConstructor
 public class FormatRestController {
 
-    @Qualifier("IDFacadeFormatService")
-    private IFormatService facadeFormatService;
+    @Qualifier("IDFormatService")
+    private IFormatService formatService;
 
 
-    @PostMapping(value = "/save", consumes =  "application/json", produces = "application/json")
+    @PostMapping("/save")
     public FormatDTOResponse saveFormat(@RequestBody FormatDTORequest format) {
-        return facadeFormatService.save(format);
+        return formatService.save(format);
     }
 
-    @PatchMapping(value = "/updateState/{id}", consumes =  "application/json", produces = "application/json")
-    public ResultDTOResponse updateFormat(@PathVariable Long id, @RequestParam(value = "state") String state) {
-        return facadeFormatService.updateState(id, state);
+    @PatchMapping("/updateState/{id}")
+    public ResultDTOResponse updateFormatState(@PathVariable Long id, @RequestParam(value = "state") String state) {
+        return formatService.updateState(id, state);
     }   
     
     @GetMapping("/get/{id}")
     public FormatDTOResponse getFormat(@PathVariable Long id) {
-        return facadeFormatService.findById(id);
+        return formatService.findById(id);
     }
     
     @GetMapping("/getBetweenDates")
     public List<FormatDTOResponse> getFormatsBetweenDates(@RequestParam(value = "startDate") LocalDate startDate, @RequestParam(value = "endDate") LocalDate endDate) {
-        return facadeFormatService.getFormatsBetweenDates(startDate, endDate);
+        return formatService.getFormatsBetweenDates(startDate, endDate);
     }
 
     @PutMapping("/update/{id}")
     public FormatDTOResponse updateFormat(@PathVariable Long id, @RequestBody FormatDTORequest format) {
-        return facadeFormatService.update(id, format);
+        return formatService.update(id, format);
     }
     
 }

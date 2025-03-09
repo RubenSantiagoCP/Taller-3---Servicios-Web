@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatPPAEntity;
-import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatTIA;
+import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.FormatTIAEntity;
 import org.springframework.boot.actuate.endpoint.invoker.cache.CachingOperationInvokerAdvisor;
 import org.springframework.stereotype.Repository;
 
@@ -26,8 +26,8 @@ public class FormatRepository {
 
     public FormatEntity addFormat(FormatEntity format) {
         System.out.println("Adding format");
-        if(format instanceof FormatTIA) {
-            System.out.printf("TIA:"+(FormatTIA)format);
+        if(format instanceof FormatTIAEntity) {
+            System.out.printf("TIA:"+(FormatTIAEntity)format);
 
         }else if(format instanceof FormatPPAEntity) {
             System.out.printf("PPA:"+(FormatPPAEntity)format);
