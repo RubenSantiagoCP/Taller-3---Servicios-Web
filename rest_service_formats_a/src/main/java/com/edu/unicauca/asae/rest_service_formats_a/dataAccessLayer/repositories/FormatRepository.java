@@ -18,12 +18,10 @@ import com.edu.unicauca.asae.rest_service_formats_a.dataAccessLayer.models.Forma
 @Repository("IDFormatRepository")
 public class FormatRepository {
 
-    private final CachingOperationInvokerAdvisor cachingOperationInvokerAdvisor;
     private Map<Long, FormatEntity> formatMap;
 
     public FormatRepository(CachingOperationInvokerAdvisor cachingOperationInvokerAdvisor) {
         formatMap = new HashMap<>();
-        this.cachingOperationInvokerAdvisor = cachingOperationInvokerAdvisor;
     }
 
     public FormatEntity addFormat(FormatEntity format) {

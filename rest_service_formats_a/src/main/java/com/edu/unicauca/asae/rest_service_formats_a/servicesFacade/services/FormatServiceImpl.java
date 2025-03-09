@@ -17,7 +17,6 @@ import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.
 import com.edu.unicauca.asae.rest_service_formats_a.servicesFacade.models.state.Result;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -38,29 +37,14 @@ public class FormatServiceImpl implements IFormatService {
 
     @Override
     public FormatDTOResponse save(FormatDTORequest format) {
-        FormatEntity formatEntity;
-        if (format instanceof FormatPPADTORequest) {
-            formatEntity = this.modelMapper.map(format, FormatPPAEntity.class);
-        } else if (format instanceof FormatTIADTORequest) {
-            formatEntity = this.modelMapper.map(format, FormatTIA.class);
-        } else {
-            formatEntity = this.modelMapper.map(format, FormatEntity.class);
-        }
-        //FormatEntity formatEntity = this.modelMapper.map(format, FormatEntity.class);
+        FormatEntity formatEntity = this.validateTypeDTORequest(format);
         formatEntity.setState(FormatState.FORMULATED);
         formatEntity.setCreatedAt(LocalDate.now());
         FormatEntity savedFormatEntity = this.formatRepository.addFormat(formatEntity);
         System.out.println(savedFormatEntity);
-        //FormatDTOResponse formatDTO = this.modelMapper.map(savedFormatEntity, FormatDTOResponse.class);
-        if (savedFormatEntity instanceof FormatPPAEntity) {
-            return this.modelMapper.map(savedFormatEntity, FormatPPADTOResponse.class);
-        } else if (savedFormatEntity instanceof FormatTIA) {
-            return this.modelMapper.map(savedFormatEntity, FormatTIADTOResponse.class);
-        } else {
-            return this.modelMapper.map(savedFormatEntity, FormatDTOResponse.class);
-        }
+        return this.validateTypeDTOResponse(savedFormatEntity);
+        
     }
-
 
     @Override
     public FormatDTOResponse findById(Long id) {
@@ -68,13 +52,7 @@ public class FormatServiceImpl implements IFormatService {
         Optional<FormatEntity> optionalFormat = this.formatRepository.getFormat(id);
         if (optionalFormat.isPresent()) {
             FormatEntity formatEntity = optionalFormat.get();
-            if (formatEntity instanceof FormatPPAEntity) {
-                formatResponse = this.modelMapper.map(formatEntity, FormatPPADTOResponse.class);
-            } else if (formatEntity instanceof FormatTIA) {
-                formatResponse = this.modelMapper.map(formatEntity, FormatTIADTOResponse.class);
-            } else {
-                formatResponse = this.modelMapper.map(formatEntity, FormatDTOResponse.class);
-            }
+            formatResponse = this.validateTypeDTOResponse(formatEntity);
         }
         return formatResponse;
     }
@@ -89,13 +67,7 @@ public class FormatServiceImpl implements IFormatService {
         } else {
             Collection<FormatEntity> formatsEntity = formatsEntityOpt.get();
             listaRetornar = formatsEntity.stream().map(formatEntity -> {
-                if (formatEntity instanceof FormatPPAEntity) {
-                    return this.modelMapper.map(formatEntity, FormatPPADTOResponse.class);
-                } else if (formatEntity instanceof FormatTIA) {
-                    return this.modelMapper.map(formatEntity, FormatTIADTOResponse.class);
-                } else {
-                    return this.modelMapper.map(formatEntity, FormatDTOResponse.class);
-                }
+                return this.validateTypeDTOResponse(formatEntity);
             }).collect(Collectors.toList());
         }
         return listaRetornar;
@@ -139,12 +111,26 @@ public class FormatServiceImpl implements IFormatService {
             this.formatRepository.updateById(id, formateUpdate);
         }
 
-        if (formateUpdate instanceof FormatPPAEntity) {
-            return this.modelMapper.map(formateUpdate, FormatPPADTOResponse.class);
-        } else if (formateUpdate instanceof FormatTIA) {
-            return this.modelMapper.map(formateUpdate, FormatTIADTOResponse.class);
+        return this.validateTypeDTOResponse(formateUpdate);
+    }
+
+    public FormatEntity  validateTypeDTORequest(FormatDTORequest format) {
+        if (format instanceof FormatPPADTORequest) {
+            return this.modelMapper.map(format, FormatPPAEntity.class);
+        } else if (format instanceof FormatTIADTORequest) {
+            return this.modelMapper.map(format, FormatTIA.class);
         } else {
-            return this.modelMapper.map(formateUpdate, FormatDTOResponse.class);
+            return this.modelMapper.map(format, FormatEntity.class);
+        }
+    }
+
+    public FormatDTOResponse validateTypeDTOResponse(FormatEntity savedFormatEntity) {
+        if (savedFormatEntity instanceof FormatPPAEntity) {
+            return this.modelMapper.map(savedFormatEntity, FormatPPADTOResponse.class);
+        } else if (savedFormatEntity instanceof FormatTIA) {
+            return this.modelMapper.map(savedFormatEntity, FormatTIADTOResponse.class);
+        } else {
+            return this.modelMapper.map(savedFormatEntity, FormatDTOResponse.class);
         }
     }
 

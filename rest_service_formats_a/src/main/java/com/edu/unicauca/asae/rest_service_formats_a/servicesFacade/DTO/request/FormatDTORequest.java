@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -17,13 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({ @JsonSubTypes.Type(value = FormatTIADTORequest.class, name = "FormatTIADTORequest") , @JsonSubTypes.Type(value = FormatPPADTORequest.class, name = "FormatPPADTORequest")})
+@JsonSubTypes({ @JsonSubTypes.Type(value = FormatTIADTORequest.class, name = "FormatTIADTORequest"),
+        @JsonSubTypes.Type(value = FormatPPADTORequest.class, name = "FormatPPADTORequest") })
 public class FormatDTORequest {
     private String state;
-    //private Long id;
+    // private Long id;
     private String title;
     private String directorName;
-    //private LocalDate createdAt;
+    // private LocalDate createdAt;
     private String generalObjective;
     private List<String> specificObjectives;
     private String stimatedTime;
